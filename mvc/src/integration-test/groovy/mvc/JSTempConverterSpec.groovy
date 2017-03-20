@@ -2,8 +2,6 @@ package mvc
 
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
-import org.openqa.selenium.Keys
-
 /**
  * See http://www.gebish.org/manual/current/ for more instructions
  */
@@ -24,6 +22,18 @@ class JSTempConverterSpec extends GebSpec {
             $("form").fahrenheit  == "32"
     }
 
-    // TODO: make a new test method for fahrenheit to celsius conversion
+    void "From Fahrenheit to Celsius with JavaScript"() {
+        when:
+        browser.driver.javascriptEnabled = true
+        go '/static/Temperatures.html'
+        then:
+        title == "Temperature Converter with JavaScript"
+
+        when: "set fahrenheit without clicking"
+        $("form").fahrenheit = "32"
+
+        then: "the other field is updated immediately"
+        $("form").celsius  == "42"
+    }
 
 }
